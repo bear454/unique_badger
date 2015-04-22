@@ -24,6 +24,10 @@ describe 'Root Path' do
     it 'is successful' do
       expect(last_response.status).to eq 200
     end
+    
+    it 'should show the total number of unique badges scanned' do
+      expect(last_response.body).to include '0 unique badges scanned'
+    end
   end
 end
 

@@ -28,6 +28,7 @@ class UniqueBadger < Sinatra::Base
   DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/development.db")
 
   get '/' do
+    @scans = Scan.count
     slim :index
   end
 
@@ -63,6 +64,7 @@ html
     == yield
 
 @@index
+h4 #{@scans} unique badges scanned.
 form action="/" method="POST"
   input type="text" name="badge"
   input.button type="submit" value="Submit Scan"
