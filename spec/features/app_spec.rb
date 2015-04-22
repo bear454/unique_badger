@@ -46,5 +46,13 @@ describe 'Scanning a badge' do
         expect(Scan.count(badge: 'testdata')).to eq 1
       end
     end
+    
+    describe 'redirect' do
+      it 'should follow the ENV variable' do
+        expect(last_response).to be_redirect
+        follow_redirect!
+        expect(last_request.url).to eq ENV['REDIRECT']
+      end
+    end
   end
 end

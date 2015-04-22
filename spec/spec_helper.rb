@@ -19,6 +19,8 @@
 ENV['RACK_ENV'] = 'test'
 ENV['DATABASE_URL'] = 'sqlite::memory:'
 
+ENV['REDIRECT'] = 'http://foo.de.bar/'
+
 require_relative File.join('..', 'app.rb')
 require 'rspec'
 require 'rack/test'

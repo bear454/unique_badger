@@ -34,6 +34,7 @@ class UniqueBadger < Sinatra::Base
 
   post '/' do
     @scan = Scan.first(badge: params[:badge]) || Scan.create(badge: params[:badge], scanned_at: Time.now)
+    redirect to(ENV['REDIRECT']) if ENV['REDIRECT']
     slim :scan
   end
 
