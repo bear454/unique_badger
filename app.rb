@@ -19,10 +19,11 @@ require 'sinatra/base'
 
 class UniqueBadger < Sinatra::Base
   set :root, File.dirname(__FILE__)
-
   ENV['RACK_ENV'] ||= 'development'
   require 'bundler'
   Bundler.require :default, ENV['RACK_ENV'].to_sym
+
+  DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/development.db")
 
   get '/' do
     "UniqueBadger"
@@ -33,3 +34,12 @@ class UniqueBadger < Sinatra::Base
   end
 end
 
+class Scan
+  include DataMapper::Resource
+  property :id, Serial
+  property :badge, String
+  property :scanned_at, DateTime
+end
+
+DataMapper.finalize
+Scan.auto_upgrade!
