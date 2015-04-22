@@ -17,7 +17,7 @@
 
 
 ENV['RACK_ENV'] = 'test'
-ENV['FRAMEWORKS'] = File.expand_path(File.join(File.dirname(__FILE__), "fixtures/frameworks.xml"))
+ENV['DATABASE_URL'] = 'sqlite::memory:'
 
 require_relative File.join('..', 'app.rb')
 require 'rspec'

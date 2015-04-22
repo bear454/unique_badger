@@ -20,8 +20,9 @@ source 'https://rubygems.org'
 
 gem 'sinatra'
 gem 'data_mapper'
+gem 'slim'
 
-group :development do
+group :development, :test do
   gem 'dm-sqlite-adapter'
   gem 'sqlite3'
 end

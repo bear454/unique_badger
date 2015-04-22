@@ -26,3 +26,21 @@ describe 'Root Path' do
     end
   end
 end
+
+describe 'Scanning a badge' do
+  describe 'POST /' do
+    before { post '/', badge: 'testdata' }
+    
+    it 'should store the badge value' do
+      expect(Scan.count(badge: 'testdata')).to eq 1
+    end
+    
+    describe 'twice' do
+      before { post '/', badge: 'testdata' }
+      
+      it 'should only store the badge once' do
+        expect(Scan.count(badge: 'testdata')).to eq 1
+      end
+    end
+  end
+end
