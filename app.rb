@@ -19,6 +19,7 @@ require 'sinatra/base'
 
 class UniqueBadger < Sinatra::Base
   set :root, File.dirname(__FILE__)
+  set :redirect_timeout, (ENV['REDIRECT_TIMEOUT'] || 5)
   enable :inline_templates
   
   ENV['RACK_ENV'] ||= 'development'
@@ -34,11 +35,14 @@ class UniqueBadger < Sinatra::Base
 
   post '/' do
     if (!params[:badge] || params[:badge].empty?)
-      status 400
+      status 422
+      @redirect = "/"
       slim :error
     else
       @scan = Scan.first(badge: params[:badge]) || Scan.create(badge: params[:badge], scanned_at: Time.now)
-      redirect to(ENV['REDIRECT']) if ENV['REDIRECT']
+      if ENV['REDIRECT']
+        @redirect = ENV['REDIRECT']
+      end
       slim :scan
     end
   end
@@ -66,20 +70,26 @@ html
   head
     meta charset="utf-8"
     title UniqueBadger
+    - if @redirect
+      meta http-equiv="refresh" content="#{settings.redirect_timeout}; url=#{@redirect}"
   body
+    - if @redirect
+      h4
+        a href=@redirect
+          | Redirecting you to 
+          i<> =@redirect
+          | in #{settings.redirect_timeout} seconds... 
     == yield
 
 @@index
-h4 #{@scans} unique badges scanned.
+h2 #{@scans} unique badges scanned.
 form action="/" method="POST"
   input type="text" name="badge"
   input.button type="submit" value="Submit Scan"
 
 @@scan
-p Badge scanned #{@scan.scanned_at.strftime("at %l:%M%P on %A, %B %-d, %Y")}
+h2 Badge scanned #{@scan.scanned_at.strftime("at %l:%M%P on %A, %B %-d, %Y")}
 pre =@scan.badge
 
 @@error
-p 
-  Invalid Scan.
-  a href="/" Try again.
+h2 Invalid Scan.

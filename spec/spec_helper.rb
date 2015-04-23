@@ -20,6 +20,7 @@ ENV['RACK_ENV'] = 'test'
 ENV['DATABASE_URL'] = 'sqlite::memory:'
 
 ENV['REDIRECT'] = 'http://foo.de.bar/'
+ENV['REDIRECT_TIMEOUT'] = '42'
 
 require_relative File.join('..', 'app.rb')
 require 'rspec'

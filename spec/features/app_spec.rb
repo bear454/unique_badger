@@ -49,9 +49,7 @@ describe 'Scanning a badge' do
     
     describe 'redirect' do
       it 'should follow the ENV variable' do
-        expect(last_response).to be_redirect
-        follow_redirect!
-        expect(last_request.url).to eq ENV['REDIRECT']
+        expect(last_response.body).to include '<meta content="42; url=http://foo.de.bar/" http-equiv="refresh" />'
       end
     end
   end
