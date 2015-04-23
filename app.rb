@@ -84,7 +84,7 @@ html
 @@index
 h2 #{@scans} unique badges scanned.
 form action="/" method="POST"
-  input type="text" name="badge"
+  input autofocus=true type="text" name="badge"
   input.button type="submit" value="Submit Scan"
 
 @@scan
