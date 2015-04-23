@@ -27,6 +27,11 @@ group :development, :test do
   gem 'sqlite3'
 end
 
+group :production do
+  gem 'dm-postgres-adapter'
+  gem 'pg'
+end
+
 group :test do
   gem 'rspec'
   gem 'rack-test'

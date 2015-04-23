@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with UniqueBadger. If not, see <http://www.gnu.org/licenses/>.
 
-require 'rspec/core/rake_task'
+begin
+  require 'rspec/core/rake_task'
 
-RSpec::Core::RakeTask.new :specs do |task|
-  task.pattern = Dir['spec/**/*_spec.rb']
+  RSpec::Core::RakeTask.new :specs do |task|
+    task.pattern = Dir['spec/**/*_spec.rb']
+  end
+rescue LoadError # rspec won't be present in production
 end
-
-task :default => ['specs']
-
