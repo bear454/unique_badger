@@ -38,7 +38,7 @@ describe 'Scanning a badge' do
     it 'should store the badge value' do
       expect(Scan.count(badge: 'testdata')).to eq 1
     end
-    
+
     describe 'twice' do
       before { post '/', badge: 'testdata' }
       
@@ -53,6 +53,15 @@ describe 'Scanning a badge' do
         follow_redirect!
         expect(last_request.url).to eq ENV['REDIRECT']
       end
+    end
+  end
+end
+
+describe 'validation' do
+  describe 'POST /' do
+    it 'should not accept an empty badge' do
+      post '/', badge: ''
+      expect(last_response).to be_unprocessable
     end
   end
 end

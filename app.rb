@@ -33,9 +33,14 @@ class UniqueBadger < Sinatra::Base
   end
 
   post '/' do
-    @scan = Scan.first(badge: params[:badge]) || Scan.create(badge: params[:badge], scanned_at: Time.now)
-    redirect to(ENV['REDIRECT']) if ENV['REDIRECT']
-    slim :scan
+    if (!params[:badge] || params[:badge].empty?)
+      status 400
+      slim :error
+    else
+      @scan = Scan.first(badge: params[:badge]) || Scan.create(badge: params[:badge], scanned_at: Time.now)
+      redirect to(ENV['REDIRECT']) if ENV['REDIRECT']
+      slim :scan
+    end
   end
 
   get '/*' do
@@ -73,3 +78,8 @@ form action="/" method="POST"
 @@scan
 p Badge scanned #{@scan.scanned_at.strftime("at %l:%M%P on %A, %B %-d, %Y")}
 pre =@scan.badge
+
+@@error
+p 
+  Invalid Scan.
+  a href="/" Try again.
